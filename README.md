@@ -25,7 +25,7 @@ class Comment < ActiveRecord::Base
 
   belongs_to :user
 
-  default_scope where: { public: true }
+  default_scope where( public: true )
 
 end
 
