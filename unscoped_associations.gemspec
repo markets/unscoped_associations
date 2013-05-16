@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = "unscoped_associations"
-  s.version = "0.0.2"
+  s.version = "0.0.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["markets"]
@@ -22,7 +22,8 @@ Gem::Specification.new do |s|
     "README.md",
     "Rakefile",
     "VERSION",
-    "lib/unscoped_associations.rb"
+    "lib/unscoped_associations.rb",
+    "unscoped_associations.gemspec"
   ]
   s.homepage = "http://github.com/markets/unscoped_associations"
   s.licenses = ["MIT"]
