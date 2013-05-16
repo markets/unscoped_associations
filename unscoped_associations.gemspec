@@ -5,12 +5,12 @@
 
 Gem::Specification.new do |s|
   s.name = "unscoped_associations"
-  s.version = "0.0.3"
+  s.version = "0.0.4"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["markets"]
   s.date = "2013-05-16"
-  s.description = "TODO: longer description of your gem"
+  s.description = "Skip default_scope in your associations"
   s.email = "srmarc.ai@gmail.com"
   s.extra_rdoc_files = [
     "LICENSE.txt",
@@ -29,7 +29,7 @@ Gem::Specification.new do |s|
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
   s.rubygems_version = "1.8.24"
-  s.summary = "TODO: one-line summary of your gem"
+  s.summary = "Skip default_scope in your associations"
 
   if s.respond_to? :specification_version then
     s.specification_version = 3
