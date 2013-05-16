@@ -17,8 +17,8 @@ Jeweler::Tasks.new do |gem|
   gem.name = "unscoped_associations"
   gem.homepage = "http://github.com/markets/unscoped_associations"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = %Q{Skip default_scope in your associations}
+  gem.description = %Q{Skip default_scope in your associations}
   gem.email = "srmarc.ai@gmail.com"
   gem.authors = ["markets"]
   # dependencies defined in Gemfile
