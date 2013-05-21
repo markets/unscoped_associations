@@ -10,7 +10,7 @@ Do it easily with this lib. Supported associations:
 Add this line to you Gemfile:
 
 ```ruby
-gem 'unscoped_associations', git: 'git@github.com:markets/unscoped_associations.git'
+gem 'unscoped_associations'
 ```
 
 ## Usage
