@@ -1,7 +1,10 @@
 Unscoped Associations
 =====================
 It may be that you've ever needed to skip default_scope pulling objects via associations (for some strange reasons).
-Do it easily with this lib (available: `:belongs_to` `:has_one` `:has_many`).
+Do it easily with this lib. Supported associations:
+* `:belongs_to`
+* `:has_one`
+* `:has_many`
 
 ## Installation
 Add this line to you Gemfile:

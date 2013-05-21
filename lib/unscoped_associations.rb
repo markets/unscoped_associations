@@ -48,15 +48,19 @@ module UnscopedAssociations
 
     def define_singular_association(association_name, options)
       define_method(association_name) do
-        klass_name = options[:class_name] || association_name.to_s.camelize 
-        @association_name ||= klass_name.constantize.unscoped { super(association_name) } 
+        klass_name = options[:class_name] || association_name.to_s.camelize
+        instance = "@unscoped_#{association_name}"
+        instance_variable_get(instance) ||
+          instance_variable_set(instance, klass_name.constantize.unscoped { super(association_name) })
       end
     end
 
     def define_collection_association(association_name, options)
       define_method(association_name) do
-        klass_name = options[:class_name] || association_name.to_s.camelize.singularize 
-        @association_name ||= klass_name.constantize.unscoped { super(association_name) } 
+        klass_name = options[:class_name] || association_name.to_s.camelize.singularize
+        instances = "@unscoped_#{association_name}"
+        instance_variable_get(instances) ||
+          instance_variable_set(instances, klass_name.constantize.unscoped { super(association_name) })
       end
     end
 
