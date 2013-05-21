@@ -5,6 +5,7 @@ module UnscopedAssociations
     (class << base; self; end).instance_eval do
       alias_method_chain :belongs_to, :unscoped
       alias_method_chain :has_many, :unscoped
+      alias_method_chain :has_one, :unscoped
     end
   end
 
@@ -12,29 +13,50 @@ module UnscopedAssociations
 
     def belongs_to_with_unscoped(name, options = {})
       if unscoped_attribute = options.delete(:unscoped)
-        add_unscoped_belongs_to(name)
+        add_unscoped_belongs_to(name, options)
       end
       belongs_to_without_unscoped(name, options)
     end
 
     def has_many_with_unscoped(name, options = {})
       if unscoped_attribute = options.delete(:unscoped)
-        add_unscoped_has_many(name)
+        add_unscoped_has_many(name, options)
       end
       has_many_without_unscoped(name, options)
     end
 
+    def has_one_with_unscoped(name, options = {})
+      if unscoped_attribute = options.delete(:unscoped)
+        add_unscoped_has_one(name, options)
+      end
+      has_one_without_unscoped(name, options)
+    end
+
     private
 
-    def add_unscoped_belongs_to(association_name)
+    def add_unscoped_belongs_to(association_name, options)
+      define_singular_association(association_name, options)
+    end
+
+    def add_unscoped_has_many(association_name, options)
+      define_collection_association(association_name, options)      
+    end
+
+    def add_unscoped_has_one(association_name, options)
+      define_singular_association(association_name, options)
+    end
+
+    def define_singular_association(association_name, options)
       define_method(association_name) do
-        @association_name ||= association_name.to_s.camelize.constantize.unscoped { super(association_name) } 
+        klass_name = options[:class_name] || association_name.to_s.camelize 
+        @association_name ||= klass_name.constantize.unscoped { super(association_name) } 
       end
     end
 
-    def add_unscoped_has_many(association_name)
+    def define_collection_association(association_name, options)
       define_method(association_name) do
-        association_name.to_s.camelize.singularize.constantize.unscoped { super(association_name) } 
+        klass_name = options[:class_name] || association_name.to_s.camelize.singularize 
+        @association_name ||= klass_name.constantize.unscoped { super(association_name) } 
       end
     end
 
