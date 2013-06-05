@@ -35,32 +35,22 @@ module UnscopedAssociations
     private
 
     def add_unscoped_belongs_to(association_name, options)
-      define_singular_association(association_name, options)
+      define_unscoped_association(association_name, options)
     end
 
     def add_unscoped_has_many(association_name, options)
-      define_collection_association(association_name, options)      
+      define_unscoped_association(association_name, options)
     end
 
     def add_unscoped_has_one(association_name, options)
-      define_singular_association(association_name, options)
+      define_unscoped_association(association_name, options)
     end
 
-    def define_singular_association(association_name, options)
+    def define_unscoped_association(association_name, options)
       define_method(association_name) do
-        klass_name = options[:class_name] || association_name.to_s.camelize
-        instance = "@unscoped_#{association_name}"
-        instance_variable_get(instance) ||
-          instance_variable_set(instance, klass_name.constantize.unscoped { super(association_name) })
-      end
-    end
-
-    def define_collection_association(association_name, options)
-      define_method(association_name) do
-        klass_name = options[:class_name] || association_name.to_s.camelize.singularize
-        instances = "@unscoped_#{association_name}"
-        instance_variable_get(instances) ||
-          instance_variable_set(instances, klass_name.constantize.unscoped { super(association_name) })
+        self.class.reflect_on_association(association_name).klass.unscoped {
+          super(association_name)
+        }
       end
     end
 
