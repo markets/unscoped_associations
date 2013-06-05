@@ -13,6 +13,12 @@ Add this line to you Gemfile:
 gem 'unscoped_associations'
 ```
 
+Or install the gem:
+
+```ruby
+gem install unscoped_associations
+```
+
 ## Usage
 Basic usage example:
 
@@ -43,8 +49,13 @@ end
 
 ```
 
-## Todo
-A lot of stuff.
+## Status
+Tested on Rails 3.2.
+
+
+## Contributing
+Ideas, fixes, improvements or any comment are welcome!
+
 
 ## License
 Copyright (c) 2013 Marc Anguera. Unscoped Associations is released under the [MIT](http://opensource.org/licenses/MIT) License.
