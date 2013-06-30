@@ -1,13 +1,13 @@
 Unscoped Associations
 =====================
-It may be that you've ever needed to skip default_scope pulling objects via associations (for some strange reasons).
+It may be that you've ever needed to skip `default_scope` pulling objects via associations (for some strange reasons).
 Do it easily with this lib. Supported associations:
 * `:belongs_to`
 * `:has_one`
 * `:has_many`
 
 ## Installation
-Add this line to you Gemfile:
+Add this line to your Gemfile:
 
 ```ruby
 gem 'unscoped_associations'
@@ -50,7 +50,7 @@ end
 ```
 
 ## Status
-Tested on Rails 3.2.
+Tested on Rails 3.x series. In Rails 4 you are able to customize data retrieving via a scope block, so you can skip `default_scope` using a block.
 
 
 ## Contributing
