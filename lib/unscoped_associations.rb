@@ -12,57 +12,35 @@ module UnscopedAssociations
   module ClassMethods
 
     def belongs_to_with_unscoped(name, scope = nil, options = {})
-      if scope.is_a?(Hash)
-        options = scope
-        scope   = nil
-      end
-
-      if options.delete(:unscoped)
-        add_unscoped_association(name)
-      end
-
-      if scope
-        belongs_to_without_unscoped(name, scope, options)
-      else
-        belongs_to_without_unscoped(name, options)
-      end
+      build_unscoped(:belongs_to, name, scope, options)
     end
 
     def has_many_with_unscoped(name, scope = nil, options = {})
-      if scope.is_a?(Hash)
-        options = scope
-        scope   = nil
-      end
-
-      if options.delete(:unscoped)
-        add_unscoped_association(name)
-      end
-
-      if scope
-        has_many_without_unscoped(name, scope, options)
-      else
-        has_many_without_unscoped(name, options)
-      end
+      build_unscoped(:has_many, name, scope, options)
     end
 
     def has_one_with_unscoped(name, scope = nil, options = {})
+      build_unscoped(:has_one, name, scope, options)
+    end
+
+    private
+
+    def build_unscoped(assoc_type, assoc_name, scope = nil, options = {})
       if scope.is_a?(Hash)
         options = scope
         scope   = nil
       end
 
       if options.delete(:unscoped)
-        add_unscoped_association(name)
+        add_unscoped_association(assoc_name)
       end
 
       if scope
-        has_one_without_unscoped(name, scope, options)
+        self.send("#{assoc_type}_without_unscoped", assoc_name, scope, options)
       else
-        has_one_without_unscoped(name, options)
+        self.send("#{assoc_type}_without_unscoped", assoc_name, options)
       end
     end
-
-    private
 
     def add_unscoped_association(association_name)
       define_method(association_name) do
