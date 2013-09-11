@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "unscoped_associations"
-  s.version = "0.3.1"
+  s.version = "0.4.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["markets"]
-  s.date = "2013-09-07"
+  s.date = "2013-09-11"
   s.description = "Skip default_scope in your associations"
   s.email = "srmarc.ai@gmail.com"
   s.extra_rdoc_files = [
