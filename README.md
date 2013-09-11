@@ -39,7 +39,7 @@ end
 @user.comments # => return public comments
 @user.all_comments # => return all comments skipping default_scope
 @user.last_comment # => return last comment skipping default_scope
-@topic.user # => return user w/o taking account 'active' flag
+@comment.user # => return user w/o taking account 'active' flag
 
 ```
 
