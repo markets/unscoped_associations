@@ -11,25 +11,55 @@ module UnscopedAssociations
 
   module ClassMethods
 
-    def belongs_to_with_unscoped(name, options = {})
+    def belongs_to_with_unscoped(name, scope = nil, options = {})
+      if scope.is_a?(Hash)
+        options = scope
+        scope   = nil
+      end
+
       if options.delete(:unscoped)
         add_unscoped_association(name)
       end
-      belongs_to_without_unscoped(name, options)
+
+      if scope
+        belongs_to_without_unscoped(name, scope, options)
+      else
+        belongs_to_without_unscoped(name, options)
+      end
     end
 
-    def has_many_with_unscoped(name, options = {})
+    def has_many_with_unscoped(name, scope = nil, options = {})
+      if scope.is_a?(Hash)
+        options = scope
+        scope   = nil
+      end
+
       if options.delete(:unscoped)
         add_unscoped_association(name)
       end
-      has_many_without_unscoped(name, options)
+
+      if scope
+        has_many_without_unscoped(name, scope, options)
+      else
+        has_many_without_unscoped(name, options)
+      end
     end
 
-    def has_one_with_unscoped(name, options = {})
+    def has_one_with_unscoped(name, scope = nil, options = {})
+      if scope.is_a?(Hash)
+        options = scope
+        scope   = nil
+      end
+
       if options.delete(:unscoped)
         add_unscoped_association(name)
       end
-      has_one_without_unscoped(name, options)
+
+      if scope
+        has_one_without_unscoped(name, scope, options)
+      else
+        has_one_without_unscoped(name, options)
+      end
     end
 
     private
