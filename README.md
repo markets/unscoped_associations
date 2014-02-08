@@ -1,5 +1,7 @@
-Unscoped Associations
-=====================
+# Unscoped Associations
+
+[![Gem Version](https://badge.fury.io/rb/unscoped_associations.png)](http://badge.fury.io/rb/unscoped_associations)
+
 Want to skip the `default_scope` when you get objects through associations (for some strange reasons)? Do it easily with this lib. Supported associations:
 * `:belongs_to`
 * `:has_one`
@@ -60,4 +62,4 @@ Anyway, you can use `unscoped` option, if you prefer.
 Ideas, fixes, improvements or any comment are welcome!
 
 ## License
-Copyright (c) 2013 Marc Anguera. Unscoped Associations is released under the [MIT](http://opensource.org/licenses/MIT) License.
+Copyright (c) 2013-2014 Marc Anguera. Unscoped Associations is released under the [MIT](LICENSE) License.

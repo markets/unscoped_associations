@@ -1,3 +1,5 @@
+require 'unscoped_associations/version'
+
 module UnscopedAssociations
 
   def self.included(base)
