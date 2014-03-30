@@ -1,6 +1,6 @@
 # Unscoped Associations
 
-[![Gem Version](https://badge.fury.io/rb/unscoped_associations.png)](http://badge.fury.io/rb/unscoped_associations)
+[![Gem Version](https://badge.fury.io/rb/unscoped_associations.svg)](http://badge.fury.io/rb/unscoped_associations)
 [![Build Status](https://travis-ci.org/markets/unscoped_associations.svg?branch=master)](https://travis-ci.org/markets/unscoped_associations)
 
 Want to skip the `default_scope` when you get objects through associations (for some strange reasons)? Do it easily with this lib. Supported associations:
