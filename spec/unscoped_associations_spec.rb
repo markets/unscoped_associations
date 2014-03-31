@@ -3,7 +3,7 @@ require 'spec_helper'
 describe UnscopedAssociations do
   context 'unscoped association omits default_scope' do
     it 'belongs_to' do
-      user = User.creatse(active: false)
+      user = User.create(active: false)
       comment = Comment.create(user_id: user.id)
 
       expect(comment.unscoped_user).to eq(user)
