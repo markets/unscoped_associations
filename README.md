@@ -30,13 +30,13 @@ class User < ActiveRecord::Base
   has_many :all_comments, class_name: 'Comment', unscoped: true
   has_one  :last_comment, class_name: 'Comment', order: 'created_at DESC', unscoped: true
 
-  default_scope where( active: true )
+  default_scope { where(active: true) }
 end
 
 class Comment < ActiveRecord::Base
   belongs_to :user, unscoped: true
 
-  default_scope where( public: true )
+  default_scope { where(public: true) }
 end
 
 @user.comments # => return public comments
