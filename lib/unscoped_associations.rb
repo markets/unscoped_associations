@@ -17,8 +17,8 @@ module UnscopedAssociations
       build_unscoped(:belongs_to, name, scope, options)
     end
 
-    def has_many_with_unscoped(name, scope = nil, options = {})
-      build_unscoped(:has_many, name, scope, options)
+    def has_many_with_unscoped(name, scope = nil, options = {}, &extension)
+      build_unscoped(:has_many, name, scope, options, &extension)
     end
 
     def has_one_with_unscoped(name, scope = nil, options = {})
@@ -27,7 +27,7 @@ module UnscopedAssociations
 
     private
 
-    def build_unscoped(assoc_type, assoc_name, scope = nil, options = {})
+    def build_unscoped(assoc_type, assoc_name, scope = nil, options = {}, &extension)
       if scope.is_a?(Hash)
         options = scope
         scope   = nil
@@ -38,9 +38,9 @@ module UnscopedAssociations
       end
 
       if scope
-        self.send("#{assoc_type}_without_unscoped", assoc_name, scope, options)
+        self.send("#{assoc_type}_without_unscoped", assoc_name, scope, options, &extension)
       else
-        self.send("#{assoc_type}_without_unscoped", assoc_name, options)
+        self.send("#{assoc_type}_without_unscoped", assoc_name, options, &extension)
       end
     end
 

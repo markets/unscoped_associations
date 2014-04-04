@@ -1,6 +1,16 @@
 class User < ActiveRecord::Base
-  has_many :comments
-  has_many :unscoped_comments, class_name: 'Comment', unscoped: true
+  has_many :comments do
+    def today
+      where('created_at <= ?', Time.now.end_of_day)
+    end
+  end
+
+  has_many :unscoped_comments, class_name: 'Comment', unscoped: true do
+    def today
+      where('created_at <= ?', Time.now.end_of_day)
+    end
+  end
+
   has_one  :last_comment, class_name: 'Comment', order: 'created_at DESC'
   has_one  :unscoped_last_comment, class_name: 'Comment', order: 'created_at DESC', unscoped: true
 
