@@ -44,7 +44,9 @@ describe UnscopedAssociations do
       its(:unscoped_comments) { should eq [comment] }
 
       context 'with an extension' do
-        # I am not sure why it doesn't work with extensions
+        # Extended methods take the default_scope
+        its('unscoped_comments.today') { should be_empty }
+        # Ideally, it should skip the default_scope
         # its('unscoped_comments.today') { should eq [comment] }
       end
     end

@@ -53,7 +53,7 @@ NOTE: Rails 4 introduces some updates (and more planned for upcoming releases) r
 
 ```ruby
 class User < ActiveRecord::Base
-  has_many :all_comments, -> { where public: [true, flase] }, class_name: 'Comment'
+  has_many :all_comments, -> { where(public: [true, false]) }, class_name: 'Comment'
 end
 ```
 
