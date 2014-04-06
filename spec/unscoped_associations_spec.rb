@@ -1,50 +1,52 @@
 require 'spec_helper'
 
 describe UnscopedAssociations do
-  context 'unscoped association omits default_scope' do
-    it 'belongs_to' do
-      user = User.create(active: false)
-      comment = Comment.create(user_id: user.id)
+  let(:user) { User.create active: false }
+  let(:comment) { Comment.create user_id: user.id, public: false }
 
-      expect(comment.unscoped_user).to eq(user)
+  context 'a belongs to association' do
+    subject { comment }
+
+    context 'scoped' do
+      its(:user) { should be_nil }
+      its(:scoped_user) { should be_nil }
     end
 
-    it 'has_many' do
-      user = User.create
-      comment = Comment.create(user_id: user.id, public: false)
-
-      expect(user.unscoped_comments).to be_present
-    end
-
-    it 'has_one' do
-      user = User.create
-      comment = Comment.create(user_id: user.id, public: false)
-
-      expect(user.unscoped_last_comment).to be_present
+    context 'unscoped' do
+      its(:unscoped_user) { should eq user }
     end
   end
 
-  context 'no unscoped association takes default_scope' do
-    it 'belongs_to' do
-      user = User.create(active: false)
-      comment = Comment.create(user_id: user.id)
+  context 'a has one association' do
+    subject { user }
 
-      expect(comment.user).to be_nil
-      expect(comment.scoped_user).to be_nil
+    context 'scoped' do
+      its(:last_comment) { should be_nil }
     end
 
-    it 'has_many' do
-      user = User.create
-      comment = Comment.create(user_id: user.id, public: false)
+    context 'unscoped' do
+      its(:unscoped_last_comment) { should eq comment }
+    end
+  end
 
-      expect(user.comments).to be_empty
+  context 'a has many association' do
+    subject { user }
+
+    context 'scoped' do
+      its(:comments) { should be_empty }
+
+      context 'with an extension' do
+        its('comments.today') { should be_empty }
+      end
     end
 
-    it 'has_one' do
-      user = User.create
-      comment = Comment.create(user_id: user.id, public: false)
+    context 'unscoped' do
+      its(:unscoped_comments) { should eq [comment] }
 
-      expect(user.last_comment).to be_nil
+      context 'with an extension' do
+        # I am not sure why it doesn't work with extensions
+        # its('unscoped_comments.today') { should eq [comment] }
+      end
     end
   end
 end
