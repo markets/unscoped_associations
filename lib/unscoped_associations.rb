@@ -46,8 +46,14 @@ module UnscopedAssociations
 
     def add_unscoped_association(association_name)
       define_method(association_name) do
-        self.class.reflect_on_association(association_name).klass.unscoped do
-          super(association_name)
+        if self.class.reflect_on_association(association_name).polymorphic?
+          self.association(association_name).klass.unscoped do
+            super(association_name)
+          end
+        else
+          self.class.reflect_on_association(association_name).klass.unscoped do
+            super(association_name)
+          end
         end
       end
     end
