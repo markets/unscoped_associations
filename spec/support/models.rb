@@ -14,6 +14,8 @@ class User < ActiveRecord::Base
   has_one  :last_comment, class_name: 'Comment', order: 'created_at DESC'
   has_one  :unscoped_last_comment, class_name: 'Comment', order: 'created_at DESC', unscoped: true
 
+  has_many :votes, as: :votable, unscoped: true
+
   default_scope { where(active: true) }
 end
 
@@ -21,6 +23,13 @@ class Comment < ActiveRecord::Base
   belongs_to :user
   belongs_to :scoped_user, class_name: 'User', foreign_key: 'user_id', unscoped: false
   belongs_to :unscoped_user, class_name: 'User', foreign_key: 'user_id', unscoped: true
+  has_many :votes, as: :votable
+
+  default_scope { where(public: true) }
+end
+
+class Vote < ActiveRecord::Base
+  belongs_to :votable, polymorphic: true, unscoped: true
 
   default_scope { where(public: true) }
 end

@@ -15,4 +15,10 @@ ActiveRecord::Schema.define do
     t.boolean :public
     t.timestamps
   end
+
+  create_table :votes, force: true do |t|
+    t.references :votable, polymorphic: true
+    t.boolean :public
+    t.timestamps
+  end
 end
