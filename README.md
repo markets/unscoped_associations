@@ -9,19 +9,21 @@ Want to skip the `default_scope` when you get objects through associations (for 
 * `:has_many`
 
 ## Installation
+
 Add this line to your Gemfile:
 
 ```ruby
 gem 'unscoped_associations'
 ```
 
-Or install the gem:
+Or install the gem manually:
 
 ```ruby
 gem install unscoped_associations
 ```
 
 ## Usage
+
 Basic usage example:
 
 ```ruby
@@ -47,11 +49,12 @@ end
 ```
 
 ## Status
-Tested on Rails 3.x series and Rails 4.0.0. Originally thought and built for Rails 3, Rails 4 supported.
 
-NOTE: Rails 4 introduces some updates (and more planned for upcoming releases) related to this part. For example, in Rails 4, you are able to customize associations using a scope block, so you can skip `default_scope`:
+Tested on Rails 3 series and Rails 4. Originally was thought and built for Rails 3, but Rails 4 is also supported.
 
-```ruby
+**NOTE** Rails 4 introduces some updates (and more planned for upcoming releases) related to this part. For example, in Rails 4, you are able to customize associations using a scope block, so you can skip the `default_scope` by:
+
+```
 class User < ActiveRecord::Base
   has_many :all_comments, -> { where(public: [true, false]) }, class_name: 'Comment'
 end
@@ -60,7 +63,9 @@ end
 Anyway, you can use `unscoped` option, if you prefer.
 
 ## Contributing
+
 Ideas, fixes, improvements or any comment are welcome!
 
 ## License
+
 Copyright (c) 2013-2014 Marc Anguera. Unscoped Associations is released under the [MIT](LICENSE) License.
