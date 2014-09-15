@@ -1,7 +1,6 @@
 require 'unscoped_associations/version'
 
 module UnscopedAssociations
-
   def self.included(base)
     base.extend ClassMethods
     (class << base; self; end).instance_eval do
@@ -12,7 +11,6 @@ module UnscopedAssociations
   end
 
   module ClassMethods
-
     def belongs_to_with_unscoped(name, scope = nil, options = {})
       build_unscoped(:belongs_to, name, scope, options)
     end

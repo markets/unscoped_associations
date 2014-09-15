@@ -1,72 +1,58 @@
 require 'spec_helper'
 
 describe UnscopedAssociations do
-  let(:user) { User.create active: false }
-  let(:comment) { Comment.create user_id: user.id, public: false }
-  let(:user_vote) { user.votes.create public: false }
-  let(:comment_vote) { comment.votes.create }
+  let!(:user) { User.create(active: false) }
+  let!(:comment) { Comment.create(user_id: user.id, public: false) }
+  let!(:user_vote) { user.votes.create(public: false) }
+  let!(:comment_vote) { comment.votes.create }
 
   context 'a belongs to association' do
-    subject { comment }
-
-    context 'scoped' do
-      its(:user) { should be_nil }
-      its(:scoped_user) { should be_nil }
+    it 'scoped' do
+      expect(comment.user).to be_nil
+      expect(comment.scoped_user).to be_nil
     end
 
-    context 'unscoped' do
-      its(:unscoped_user) { should eq user }
+    it 'unscoped' do
+      expect(comment.unscoped_user).to eq(user)
+    end
+
+    it 'unscoped polymorphic' do
+      expect(comment_vote.votable).to eq(comment)
     end
   end
 
   context 'a has one association' do
-    subject { user }
-
-    context 'scoped' do
-      its(:last_comment) { should be_nil }
+    it 'scoped' do
+      expect(user.last_comment).to be_nil
     end
 
-    context 'unscoped' do
-      its(:unscoped_last_comment) { should eq comment }
+    it 'unscoped' do
+      expect(user.unscoped_last_comment).to eq(comment)
     end
   end
 
   context 'a has many association' do
-    subject { user }
-
-    context 'scoped' do
-      its(:comments) { should be_empty }
-
-      context 'with an extension' do
-        its('comments.today') { should be_empty }
-      end
+    it 'scoped' do
+      expect(user.comments).to be_empty
     end
 
-    context 'unscoped' do
-      its(:unscoped_comments) { should eq [comment] }
-
-      context 'with an extension' do
-        # Extended methods take the default_scope
-        its('unscoped_comments.today') { should be_empty }
-        # Ideally, it should skip the default_scope
-        # its('unscoped_comments.today') { should eq [comment] }
-      end
+    it 'scoped with an extension' do
+      expect(user.comments.today).to be_empty
     end
-  end
 
-  context 'has_many with unscoped polymorphic' do
-    subject { user }
-
-    context 'unscoped_votable' do
-      its(:votes) { should eq [user_vote] }
+    it 'unscoped' do
+      expect(user.unscoped_comments).to eq([comment])
     end
-  end
 
-  context 'belongs_to with unscoped polymorphic' do
-    subject { comment_vote }
+    it 'unscoped with an extension' do
+      # Extended methods take the default_scope
+      expect(user.unscoped_comments.today).to be_empty
+      # Ideally, it should skip the default_scope
+      # expect(user.unscoped_comments.today).to eq([comment])
+    end
 
-    context 'unscoped_votable' do
-      its(:votable) { should eq comment }
+    it 'unscoped polymorphic' do
+      expect(user.votes).to eq([user_vote])
     end
   end
 end
