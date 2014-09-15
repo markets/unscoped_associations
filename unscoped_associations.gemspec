@@ -18,7 +18,6 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "activerecord", ">= 0"
 
-  spec.add_development_dependency "debugger"
   spec.add_development_dependency "rake"
   spec.add_development_dependency "rspec", '~> 3.1'
   spec.add_development_dependency "sqlite3"
