@@ -55,7 +55,7 @@ Tested on Rails 3 series and Rails 4. Originally was thought and built for Rails
 
 Rails 4 introduces some updates regarding this part. For example, in Rails 4, you are able to customize associations using a scope block (overriding conditions), so you can skip the `default_scope` by:
 
-```
+```ruby
 class User < ActiveRecord::Base
   has_many :all_comments, -> { where(public: [true, false]) }, class_name: 'Comment'
 end
@@ -63,7 +63,7 @@ end
 
 Since Rails 4.1, you can use the `unscope` method:
 
-```
+```ruby
 class User < ActiveRecord::Base
   has_many :all_comments, -> { unscope(where: :public) }, class_name: 'Comment'
 end
