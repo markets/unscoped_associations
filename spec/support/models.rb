@@ -11,8 +11,8 @@ class User < ActiveRecord::Base
     end
   end
 
-  has_one  :last_comment, class_name: 'Comment', order: 'created_at DESC'
-  has_one  :unscoped_last_comment, class_name: 'Comment', order: 'created_at DESC', unscoped: true
+  has_one  :last_comment, -> { order('created_at DESC') }, class_name: 'Comment'
+  has_one  :unscoped_last_comment, -> { order('created_at DESC') }, class_name: 'Comment', unscoped: true
 
   has_many :votes, as: :votable, unscoped: true
 
