@@ -3,7 +3,9 @@
 [![Gem Version](https://badge.fury.io/rb/unscoped_associations.svg)](http://badge.fury.io/rb/unscoped_associations)
 [![Build Status](https://travis-ci.org/markets/unscoped_associations.svg?branch=master)](https://travis-ci.org/markets/unscoped_associations)
 
-Want to skip the `default_scope` when you get objects through associations (for some strange reasons)? Do it easily with this lib. Supported associations:
+Do you need to skip the `default_scope` when you fetch objects through associations (for some strange reasons)? Do it easily with this lib!
+
+Supported associations:
 
 * `:belongs_to`
 * `:has_one`
@@ -53,7 +55,7 @@ end
 
 Tested on Rails 3 series and Rails 4. Originally was thought and built for Rails 3, but Rails 4 is also supported.
 
-Rails 4 introduces some updates regarding this part. For example, in Rails 4, you are able to customize associations using a scope block (overriding conditions), so you can skip the `default_scope` by:
+Rails 4 introduces some updates regarding this part. For example, in Rails 4, you are able to customize associations using a scope block (overriding conditions), so you can skip the `default_scope` conditions by:
 
 ```ruby
 class User < ActiveRecord::Base
@@ -61,7 +63,7 @@ class User < ActiveRecord::Base
 end
 ```
 
-Since Rails 4.1, you can use the `unscope` method:
+Since Rails 4.1, you can override default conditions using `unscope` method:
 
 ```ruby
 class User < ActiveRecord::Base
@@ -69,7 +71,11 @@ class User < ActiveRecord::Base
 end
 ```
 
-Anyway, you can use `unscoped` option, if you prefer.
+Anyway, you can continue using `unscoped_associations`, still useful if you prefer to bypass the entire `default_scope`, if it's a scope with multiple conditions, like:
+
+```ruby
+default_scope { where(public: true).order(:updated_at) }
+```
 
 ## Contributing
 
