@@ -11,8 +11,13 @@ class User < ActiveRecord::Base
     end
   end
 
-  has_one  :last_comment, -> { order('created_at DESC') }, class_name: 'Comment'
-  has_one  :unscoped_last_comment, -> { order('created_at DESC') }, class_name: 'Comment', unscoped: true
+  if ActiveRecord::VERSION::MAJOR >= 4
+    has_one  :last_comment, -> { order('created_at DESC') }, class_name: 'Comment'
+    has_one  :unscoped_last_comment, -> { order('created_at DESC') }, class_name: 'Comment', unscoped: true
+  else
+    has_one  :last_comment, class_name: 'Comment', order: ('created_at DESC')
+    has_one  :unscoped_last_comment, class_name: 'Comment', unscoped: true, order: ('created_at DESC')
+  end
 
   has_many :votes, as: :votable, unscoped: true
 
