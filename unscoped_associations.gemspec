@@ -6,8 +6,8 @@ Gem::Specification.new do |spec|
   spec.version       = UnscopedAssociations::VERSION
   spec.authors       = ["Marc Anguera Insa"]
   spec.email         = ["srmarc.ai@gmail.com"]
-  spec.description   = %q{Skip default_scope in your associations}
-  spec.summary       = %q{Skip default_scope in your associations}
+  spec.description   = "Skip default_scope in your associations"
+  spec.summary       = "Skip default_scope in your associations"
   spec.homepage      = "https://github.com/markets/unscoped_associations"
   spec.license       = "MIT"
 
@@ -16,8 +16,9 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
-  spec.add_dependency "activerecord", ">= 0"
+  spec.add_dependency "activerecord"
 
+  spec.add_development_dependency "appraisal"
   spec.add_development_dependency "rake"
   spec.add_development_dependency "rspec", '~> 3.1'
   spec.add_development_dependency "sqlite3"
