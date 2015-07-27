@@ -31,8 +31,10 @@ module UnscopedAssociations
         scope   = nil
       end
 
-      if options.delete(:unscoped)
-        add_unscoped_association(assoc_name)
+      unscoped_option = options.delete(:unscoped)
+
+      if unscoped_option.present?
+        add_unscoped_association(assoc_name, unscoped_option)
       end
 
       if scope
@@ -42,15 +44,35 @@ module UnscopedAssociations
       end
     end
 
-    def add_unscoped_association(association_name)
-      define_method(association_name) do
-        if self.class.reflect_on_association(association_name).options.key?(:polymorphic)
-          self.association(association_name).klass.unscoped do
-            super(association_name)
+    def add_unscoped_association(association_name, unscoped_option)
+      if unscoped_option.is_a?(Class)
+        src = <<-END_SRC
+          def #{association_name}
+            #{unscoped_option.name}.unscoped do
+              super
+            end
           end
-        else
-          self.class.reflect_on_association(association_name).klass.unscoped do
-            super(association_name)
+        END_SRC
+        class_eval src, __FILE__, __LINE__
+      elsif unscoped_option.is_a?(Symbol) || unscoped_option.is_a?(String)
+          src = <<-END_SRC
+          def #{association_name}
+            #{unscoped_option.to_s.camelize}.unscoped do
+              super
+            end
+          end
+        END_SRC
+        class_eval src, __FILE__, __LINE__
+      else
+        define_method(association_name) do
+          if self.class.reflect_on_association(association_name).options.key?(:polymorphic)
+            self.association(association_name).klass.unscoped do
+              super(association_name)
+            end
+          else
+            self.class.reflect_on_association(association_name).klass.unscoped do
+              super(association_name)
+            end
           end
         end
       end
