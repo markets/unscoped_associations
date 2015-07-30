@@ -45,7 +45,7 @@ module UnscopedAssociations
     end
 
     def unscoped_option_to_class_name(option)
-      case option.class
+      case option
         when String
           option.camelize
         when Symbol

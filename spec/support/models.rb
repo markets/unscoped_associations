@@ -41,6 +41,7 @@ class Vote < ActiveRecord::Base
   has_one :str_user, through: :comment, unscoped: 'comment', source: :user
   has_one :sym_user, through: :comment, unscoped: :comment, source: :user
   has_one :class_user, through: :comment, unscoped: Comment, source: :user
+  has_one :arr_user, through: :comment, unscoped: [:comment, User], source: :user
 
   default_scope { where(public: true) }
 end
