@@ -44,22 +44,33 @@ module UnscopedAssociations
       end
     end
 
+    def unscoped_option_to_class_name(option)
+      case option.class
+        when String
+          option.camelize
+        when Symbol
+          option.to_s.camelize
+        when Class
+          option.name
+      end
+    end
+
     def add_unscoped_association(association_name, unscoped_option)
-      if unscoped_option.is_a?(Class)
+      if [Class, Symbol, String].include? unscoped_option.class
         src = <<-END_SRC
           def #{association_name}
-            #{unscoped_option.name}.unscoped do
+            #{unscoped_option_to_class_name unscoped_option}.unscoped do
               super
             end
           end
         END_SRC
         class_eval src, __FILE__, __LINE__
-      elsif unscoped_option.is_a?(Symbol) || unscoped_option.is_a?(String)
-          src = <<-END_SRC
+      elsif unscoped_option.is_a? Array
+        src = <<-END_SRC
           def #{association_name}
-            #{unscoped_option.to_s.camelize}.unscoped do
-              super
-            end
+            #{unscoped_option.inject('super') do |result, option|
+              "#{unscoped_option_to_class_name option}.unscoped { #{result} }"
+            end}
           end
         END_SRC
         class_eval src, __FILE__, __LINE__
