@@ -35,6 +35,12 @@ end
 
 class Vote < ActiveRecord::Base
   belongs_to :votable, polymorphic: true, unscoped: true
+  # @note dirty hack for creating through-association
+  belongs_to :comment, foreign_key: 'votable_id', class_name: 'Comment'
+  has_one :bool_user, through: :comment, unscoped: true, source: :user
+  has_one :str_user, through: :comment, unscoped: 'comment', source: :user
+  has_one :sym_user, through: :comment, unscoped: :comment, source: :user
+  has_one :class_user, through: :comment, unscoped: Comment, source: :user
 
   default_scope { where(public: true) }
 end
