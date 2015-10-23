@@ -43,14 +43,14 @@ module UnscopedAssociations
     end
 
     def add_unscoped_association(association_name)
-      define_method(association_name) do
+      define_method(association_name) do |*args|
         if self.class.reflect_on_association(association_name).options.key?(:polymorphic)
           self.association(association_name).klass.unscoped do
-            super(association_name)
+            super(*args)
           end
         else
           self.class.reflect_on_association(association_name).klass.unscoped do
-            super(association_name)
+            super(*args)
           end
         end
       end
