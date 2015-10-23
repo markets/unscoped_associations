@@ -19,6 +19,17 @@ describe UnscopedAssociations do
     it 'unscoped polymorphic' do
       expect(comment_vote.votable).to eq(comment)
     end
+
+    context 'unscoped with unsaved user' do
+      let(:user) { User.new }
+      let(:comment) { Comment.new(unscoped_user: user) }
+      let(:user_vote) { nil }
+      let(:comment_vote) { nil }
+
+      it 'returns user' do
+        expect(comment.unscoped_user).to eq user
+      end
+    end
   end
 
   context 'a has one association' do
@@ -41,7 +52,8 @@ describe UnscopedAssociations do
     end
 
     it 'unscoped' do
-      expect(user.unscoped_comments).to eq([comment])
+      # pass true to force reload in order to remove the default scope
+      expect(user.unscoped_comments(true)).to eq([comment])
     end
 
     it 'unscoped with an extension' do
