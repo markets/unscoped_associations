@@ -44,7 +44,7 @@ module UnscopedAssociations
 
     def add_unscoped_association(association_name)
       define_method(association_name) do
-        instance_variable_get("@cache_#{c}") || instance_variable_set("@cache_#{c}", eval(<<-CODE))
+        instance_variable_get("@cache_#{association_name}") || instance_variable_set("@cache_#{association_name}", eval(<<-CODE))
           if self.class.reflect_on_association(association_name).options.key?(:polymorphic)
             self.association(association_name).klass.unscoped do
               super(association_name)
