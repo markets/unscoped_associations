@@ -3,7 +3,7 @@ require 'unscoped_associations/version'
 module UnscopedAssociations
   def self.included(base)
     base.extend ClassMethods
-    (class << base; self; end).instance_eval do
+    class << base
       alias_method_chain :belongs_to, :unscoped
       alias_method_chain :has_many, :unscoped
       alias_method_chain :has_one, :unscoped
@@ -36,26 +36,20 @@ module UnscopedAssociations
       end
 
       if scope
-        self.send("#{assoc_type}_without_unscoped", assoc_name, scope, options, &extension)
+        send("#{assoc_type}_without_unscoped", assoc_name, scope, options, &extension)
       else
-        self.send("#{assoc_type}_without_unscoped", assoc_name, options, &extension)
+        send("#{assoc_type}_without_unscoped", assoc_name, options, &extension)
       end
     end
 
     def add_unscoped_association(association_name)
       define_method(association_name) do
-        if self.class.reflect_on_association(association_name).options.key?(:polymorphic)
-          self.association(association_name).klass.unscoped do
-            super(association_name)
-          end
-        else
-          self.class.reflect_on_association(association_name).klass.unscoped do
-            super(association_name)
-          end
+        association(association_name).klass.unscoped do
+          super(association_name)
         end
       end
     end
   end
 end
 
-ActiveRecord::Base.instance_eval { include UnscopedAssociations }
+ActiveRecord::Base.send(:include, UnscopedAssociations)
