@@ -43,9 +43,14 @@ module UnscopedAssociations
     end
 
     def add_unscoped_association(association_name)
-      define_method(association_name) do
-        association(association_name).klass.unscoped do
-          super(association_name)
+      define_method(association_name) do |*args|
+        force_reload = args[0]
+        if !force_reload && instance_variable_get("@_cache_#{association_name}")
+          instance_variable_get("@_cache_#{association_name}")
+        else
+          instance_variable_set("@_cache_#{association_name}",
+            association(association_name).klass.unscoped { super(true) }
+          )
         end
       end
     end

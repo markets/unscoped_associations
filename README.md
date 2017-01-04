@@ -3,13 +3,15 @@
 [![Gem Version](https://badge.fury.io/rb/unscoped_associations.svg)](http://badge.fury.io/rb/unscoped_associations)
 [![Build Status](https://travis-ci.org/markets/unscoped_associations.svg?branch=master)](https://travis-ci.org/markets/unscoped_associations)
 
-Do you need to skip the `default_scope` when you fetch objects through associations (for some strange reasons)? Do it easily with this lib!
+Have you ever needed to skip the `default_scope` when fetching objects through associations methods (for some strange reasons)? Do it easily with this `Active Record` extension!
 
 Supported associations:
 
-* `:belongs_to`
-* `:has_one`
-* `:has_many`
+- `:belongs_to`
+- `:has_one`
+- `:has_many`
+
+Officially supported (tested) `Active Record` versions: 3.2, 4.0, 4.1 and 4.2.
 
 ## Installation
 
@@ -31,9 +33,8 @@ Basic usage example:
 
 ```ruby
 class User < ActiveRecord::Base
-  has_many :comments # or , unscoped: false
+  has_many :comments
   has_many :all_comments, class_name: 'Comment', unscoped: true
-  has_one  :last_comment, class_name: 'Comment', order: 'created_at DESC', unscoped: true
 
   default_scope { where(active: true) }
 end
@@ -43,19 +44,19 @@ class Comment < ActiveRecord::Base
 
   default_scope { where(public: true) }
 end
-
-@user.comments # => return public comments
-@user.all_comments # => return all comments skipping default_scope
-@user.last_comment # => return last comment skipping default_scope
-@comment.user # => return user w/o taking account 'active' flag
-
 ```
+
+From now on, you get:
+
+- `@user.comments`: return all public comments
+- `@user.all_comments`: return all comments skipping the default_scope
+- `@comment.user`: return the user without taking account the 'active' flag
 
 ## Status
 
-Tested on Rails 3 series and Rails 4. Originally was thought and built for Rails 3, but Rails 4 is also supported.
+This project was originally thought and built for a Rails 3.2 application.
 
-Rails 4 introduces some updates regarding this part. For example, in Rails 4, you are able to customize associations using a scope block (overriding conditions), so you can skip the `default_scope` conditions by:
+Rails 4 introduces some updates regarding associations. For example, since Rails 4 (AR 4 to be precise), you are able to customize associations using a scope block (overriding conditions), so you can skip the `default_scope` conditions by:
 
 ```ruby
 class User < ActiveRecord::Base
@@ -63,7 +64,7 @@ class User < ActiveRecord::Base
 end
 ```
 
-Since Rails 4.1, you can override default conditions using `unscope` method:
+Since Rails 4.1, you can also override the default conditions using the `unscope` method:
 
 ```ruby
 class User < ActiveRecord::Base
@@ -71,16 +72,30 @@ class User < ActiveRecord::Base
 end
 ```
 
-Anyway, you can continue using `unscoped_associations`, still useful if you prefer to bypass the entire `default_scope`, if it's a scope with multiple conditions, like:
+Anyway, you can continue using `unscoped_associations`, could be useful in certain situations, for example, if you prefer to bypass the entire `default_scope`, given a scope with multiple conditions, like:
 
 ```ruby
 default_scope { where(public: true).order(:updated_at) }
 ```
 
+It was also supported for Rails 4.X series as a migration path.
+
+## Notes
+
+- Under the hood, Unscoped Associations relies on the `unscoped` method (from AR). So, chaining unscoped associations with other AR query methods won't work. E.g.: `@user.all_comments.count` will load comments with the `defaul_scope` applied. In this case, `@user.all_comments.to_a.count` should work.
+- Unscoped Associations doen't touch the preloading layer, so `includes`, `joins`, ... with unscoped associations, can cause `N+1` problems.
+
 ## Contributing
 
-Ideas, fixes, improvements or any comment are welcome!
+Any kind of fixes, both code and docs, or enhancements are really welcome!
+
+To contribute, just fork the repo, hack on it and send a pull request. Don't forget to add specs for behaviour changes and run the tests by:
+
+```
+bundle exec rspec
+bundle exec appraisal rspec # run against all supported AR versions
+```
 
 ## License
 
-Copyright (c) 2013-2015 Marc Anguera. Unscoped Associations is released under the [MIT](LICENSE) License.
+Copyright (c) Marc Anguera. Unscoped Associations is released under the [MIT](LICENSE) License.

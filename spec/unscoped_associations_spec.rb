@@ -2,9 +2,9 @@ require 'spec_helper'
 
 describe UnscopedAssociations do
   let!(:user) { User.create(active: false) }
-  let!(:comment) { Comment.create(user_id: user.id, public: false) }
-  let!(:user_vote) { user.votes.create(public: false) }
-  let!(:comment_vote) { comment.votes.create }
+  let!(:comment) { Comment.create(unscoped_user: user, public: false) }
+  let!(:user_vote) { Vote.create(votable: user, public: false) }
+  let!(:comment_vote) { Vote.create(votable: comment) }
 
   context 'a belongs to association' do
     it 'scoped' do
@@ -42,6 +42,12 @@ describe UnscopedAssociations do
 
     it 'unscoped' do
       expect(user.unscoped_comments).to eq([comment])
+    end
+
+    it 'unscoped accepts force_reload' do
+      comments_count = user.unscoped_comments.to_a.count
+      Comment.create(unscoped_user: user, public: false)
+      expect(user.unscoped_comments(true).to_a.count).to eq(comments_count + 1)
     end
 
     it 'unscoped with an extension' do

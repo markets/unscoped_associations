@@ -22,5 +22,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rake"
   spec.add_development_dependency "rspec", '~> 3.1'
   spec.add_development_dependency "sqlite3"
+  spec.add_development_dependency "byebug" if RUBY_VERSION.to_i >= 2
 end
 
