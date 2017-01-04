@@ -11,7 +11,7 @@ Supported associations:
 - `:has_one`
 - `:has_many`
 
-Officially supported (tested) `Active Record` versions: 3.2, 4.0, 4.1 and 4.2.
+Officially supported (tested) `Active Record` versions: 3.2, 4.0, 4.1, 4.2 and 5.0.
 
 ## Installation
 
@@ -78,7 +78,7 @@ Anyway, you can continue using `unscoped_associations`, could be useful in certa
 default_scope { where(public: true).order(:updated_at) }
 ```
 
-It was also supported for Rails 4.X series as a migration path.
+It was also supported for Rails 4.X series and 5.0 as a migration path.
 
 ## Notes
 
