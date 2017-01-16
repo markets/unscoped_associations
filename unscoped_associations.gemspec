@@ -1,5 +1,4 @@
-$:.push File.expand_path("../lib", __FILE__)
-require 'unscoped_associations/version'
+require './lib/unscoped_associations/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "unscoped_associations"
@@ -16,7 +15,7 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
-  spec.add_dependency "activerecord", ">= 3.2.0", "<= 5.1.0"
+  spec.add_dependency "activerecord", ">= 3.2.0", "< 5.1.0"
 
   spec.add_development_dependency "appraisal"
   spec.add_development_dependency "rake"
