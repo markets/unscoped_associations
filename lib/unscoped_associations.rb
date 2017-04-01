@@ -9,20 +9,20 @@ module UnscopedAssociations
 
   module ClassMethods
     def belongs_to(name, scope = nil, options = {})
-      super *build_unscoped(name, scope, options)
+      build_unscoped(Proc.new {|*args| super(*args) }, name, scope, options)
     end
 
     def has_many(name, scope = nil, options = {}, &extension)
-      super *build_unscoped(name, scope, options, &extension)
+      build_unscoped(Proc.new {|*args| super(*args) }, name, scope, options, &extension)
     end
 
     def has_one(name, scope = nil, options = {})
-      super *build_unscoped(name, scope, options)
+      build_unscoped(Proc.new {|*args| super(*args) }, name, scope, options)
     end
 
     private
 
-    def build_unscoped(assoc_name, scope = nil, options = {}, &extension)
+    def build_unscoped(assoc_super, assoc_name, scope = nil, options = {}, &extension)
       if scope.is_a?(Hash)
         options = scope
         scope   = nil
@@ -33,9 +33,9 @@ module UnscopedAssociations
       end
 
       if scope
-        [assoc_name, scope, options, extension]
+        assoc_super.call(assoc_name, scope, options, &extension)
       else
-        [assoc_name, options, extension]
+        assoc_super.call(assoc_name, options, &extension)
       end
     end
 
