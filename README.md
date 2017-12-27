@@ -48,9 +48,9 @@ end
 
 From now on, you get:
 
-- `@user.comments`: return all public comments
-- `@user.all_comments`: return all comments skipping the default_scope
-- `@comment.user`: return the user without taking account the 'active' flag
+- `@user.comments`: returns all public comments
+- `@user.all_comments`: returns all comments skipping the default_scope
+- `@comment.user`: returns the user without taking account the 'active' flag
 
 ## Status
 
@@ -75,15 +75,15 @@ end
 Anyway, you can continue using `unscoped_associations`, could be useful in certain situations, for example, if you prefer to bypass the entire `default_scope`, given a scope with multiple conditions, like:
 
 ```ruby
-default_scope { where(public: true).order(:updated_at) }
+default_scope { where(public: true, deleted_at: nil).order(:updated_at) }
 ```
 
-It was also supported for Rails 4.X series and 5.0 as a migration path.
+Rails 5.0 is also supported as a migration path to facilitate upgrades.
 
 ## Notes
 
 - Under the hood, Unscoped Associations relies on the `unscoped` method (from AR). So, chaining unscoped associations with other AR query methods won't work. E.g.: `@user.all_comments.count` will load comments with the `defaul_scope` applied. In this case, `@user.all_comments.to_a.count` should work.
-- Unscoped Associations doen't touch the preloading layer, so `includes`, `joins`, ... with unscoped associations, can cause `N+1` problems.
+- Unscoped Associations doesn't touch the preloading layer, so `includes`, `joins`, ... in combination with an unscoped association can cause `N+1` problems.
 
 ## Contributing
 
