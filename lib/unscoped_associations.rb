@@ -2,30 +2,27 @@ require 'unscoped_associations/version'
 
 module UnscopedAssociations
   def self.included(base)
-    base.extend ClassMethods
     class << base
-      alias_method_chain :belongs_to, :unscoped
-      alias_method_chain :has_many, :unscoped
-      alias_method_chain :has_one, :unscoped
+        prepend ClassMethods    
     end
   end
 
   module ClassMethods
-    def belongs_to_with_unscoped(name, scope = nil, options = {})
-      build_unscoped(:belongs_to, name, scope, options)
+    def belongs_to(name, scope = nil, options = {})
+      build_unscoped(Proc.new {|*args| super(*args) }, name, scope, options)
     end
 
-    def has_many_with_unscoped(name, scope = nil, options = {}, &extension)
-      build_unscoped(:has_many, name, scope, options, &extension)
+    def has_many(name, scope = nil, options = {}, &extension)
+      build_unscoped(Proc.new {|*args| super(*args) }, name, scope, options, &extension)
     end
 
-    def has_one_with_unscoped(name, scope = nil, options = {})
-      build_unscoped(:has_one, name, scope, options)
+    def has_one(name, scope = nil, options = {})
+      build_unscoped(Proc.new {|*args| super(*args) }, name, scope, options)
     end
 
     private
 
-    def build_unscoped(assoc_type, assoc_name, scope = nil, options = {}, &extension)
+    def build_unscoped(assoc_super, assoc_name, scope = nil, options = {}, &extension)
       if scope.is_a?(Hash)
         options = scope
         scope   = nil
@@ -36,9 +33,9 @@ module UnscopedAssociations
       end
 
       if scope
-        send("#{assoc_type}_without_unscoped", assoc_name, scope, options, &extension)
+        assoc_super.call(assoc_name, scope, options, &extension)
       else
-        send("#{assoc_type}_without_unscoped", assoc_name, options, &extension)
+        assoc_super.call(assoc_name, options, &extension)
       end
     end
 
